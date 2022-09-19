@@ -1,0 +1,2 @@
+@Library('JenkinsShared')_
+CondaPipeline([], "ts-report-generator", "lsst.ts.report.generator", "noarch")
