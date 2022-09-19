@@ -1,0 +1,18 @@
+<-- Script : UNCONFIGURED
+<-- Script : CONFIGURED
+<-- Script : CONFIGURED
+<-- Script : RUNNING
+Script -> ATAOS : command_start
+activate ATAOS
+Script <- ATAOS: [CMD_INPROGRESS]::\n
+<-- ATAOS : logevent_configurationApplied[_init.yaml, tags/v0.10.1-0-ga50fd4e]
+<-- ATAOS : logevent_summaryState[DISABLED]
+Script <- ATAOS: [CMD_COMPLETE]::\nDone
+deactivate ATAOS
+Script -> ATAOS : command_enable
+activate ATAOS
+<-- ATAOS : logevent_summaryState[ENABLED]
+Script <- ATAOS: [CMD_COMPLETE]::\nDone
+deactivate ATAOS
+<-- Script : ENDING
+<-- Script : DONE
