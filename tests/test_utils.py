@@ -19,18 +19,17 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-import typing
+from lsst.ts.report.generator.utils import get_updated_report
 
-if typing.TYPE_CHECKING:
-    __version__ = "?"
-else:
-    try:
-        from .version import *
-    except ImportError:
-        __version__ = "?"
 
-from .actor import *
-from .participant import *
-from .report_generator import *
-from .topic_definition import *
-from .utils import *
+def test_get_updated_report() -> None:
+
+    report_data = dict(a="some text", b="some other text")
+
+    new_report_data = dict(b="some new text for b", c="new report entry")
+
+    updated_report = get_updated_report(report_data, new_report_data)
+
+    assert "a" not in updated_report
+    assert updated_report["b"] == f"{report_data['b']}\n{new_report_data['b']}"
+    assert updated_report["c"] == new_report_data["c"]

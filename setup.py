@@ -1,4 +1,4 @@
-# This file is part of ts_report_generator.
+# This file is part of ts_fbs_utils.
 #
 # Developed for the LSST Data Management System.
 # This product includes software developed by the LSST Project
@@ -19,18 +19,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-import typing
+import setuptools_scm
+from setuptools import setup
 
-if typing.TYPE_CHECKING:
-    __version__ = "?"
-else:
-    try:
-        from .version import *
-    except ImportError:
-        __version__ = "?"
-
-from .actor import *
-from .participant import *
-from .report_generator import *
-from .topic_definition import *
-from .utils import *
+setup(
+    version=setuptools_scm.get_version(),
+)

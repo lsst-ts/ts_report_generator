@@ -1,0 +1,40 @@
+{% set data= load_setup_py_data() %}
+package:
+  name: ts-report-generator
+  version: {{ data.get('version') }}
+
+source:
+  path: ../
+
+build:
+  noarch: python
+  script: {{ PYTHON }} -m pip install --no-deps --ignore-installed .
+  entry_points:
+    - generate_report = lsst.ts.report.generator:generate_report
+
+test:
+  requires:
+    - ts-conda-build =0.3
+  source_files:
+    - python
+    - tests
+    - setup.cfg
+    - pyproject.toml
+  commands:
+    - pytest -vsx
+
+requirements:
+  host:
+    - python {{ python }}
+    - numpy {{ numpy }}
+    - pip
+    - setuptools_scm
+    - setuptools
+  build:
+    - python {{ python }}
+    - numpy {{ numpy }}
+    - setuptools
+    - setuptools_scm
+    - ts-conda-build
+  run:
+    - python {{ python }}

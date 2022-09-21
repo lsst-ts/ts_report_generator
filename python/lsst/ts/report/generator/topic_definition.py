@@ -19,18 +19,40 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+__all__ = ["TopicDefinition"]
+
 import typing
+from dataclasses import dataclass
+from enum import Enum
 
-if typing.TYPE_CHECKING:
-    __version__ = "?"
-else:
-    try:
-        from .version import *
-    except ImportError:
-        __version__ = "?"
+import pandas
 
-from .actor import *
-from .participant import *
-from .report_generator import *
-from .topic_definition import *
-from .utils import *
+
+@dataclass
+class TopicDefinition:
+    name: str
+    attributes: None | dict[str, None | typing.Type[Enum]] = None
+
+    def generate_report(self, data: pandas.DataFrame) -> str:
+        """Generate report for input data.
+
+        Parameters
+        ----------
+        data : `pandas.DataFrame`
+            Input data
+
+        Returns
+        -------
+        `str`
+            Report
+        """
+        attributes = self.attributes if self.attributes is not None else dict()
+
+        return ", ".join(
+            [
+                str(getattr(data, attribute)[0])
+                if descriptor is None
+                else descriptor(getattr(data, attribute)[0]).name
+                for attribute, descriptor in attributes.items()
+            ]
+        )
